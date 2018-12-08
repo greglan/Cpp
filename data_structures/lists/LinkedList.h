@@ -7,7 +7,6 @@ public:
     int data;
     LinkedList* next;
 
-    LinkedList();
     LinkedList(int data);
     ~LinkedList();
     void add(int data);

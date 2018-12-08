@@ -1,11 +1,9 @@
 #include <cstdlib>
+#include <iostream>
 #include "LinkedList.h"
 
 
-LinkedList::LinkedList()
-{
-    this->next = nullptr;
-}
+using namespace std;
 
 
 LinkedList::LinkedList(int data)
@@ -61,6 +59,16 @@ void LinkedList::remove(int data)
 void LinkedList::print()
 {
     //TODO
+    cout << this->data;
+    LinkedList* node = this->next;
+
+    while (node != nullptr)
+    {
+        cout << " -> " << node->data;
+        node = node->next;
+    }
+
+    cout << endl;
 }
 
 
@@ -68,12 +76,6 @@ int main()
 {
     LinkedList *list;
     LinkedList *list_2;
-
-    list = new LinkedList();
-    list->add(2);
-    list->add(2);
-    list->add(5);
-    delete list;
 
     list = new LinkedList(2);
     list->add(2);
@@ -84,8 +86,10 @@ int main()
     list->add(2);
     list->add(3);
     list->add(4);
+    list->print();
     list->remove(1);
     list->remove(3);
+    list->print();
     list->remove(4);
     list->remove(2);
     delete list;
