@@ -2,6 +2,9 @@
 #define PROGS_STACK_H
 
 
+#include <exception>
+
+
 class Stack {
 
 private:
@@ -20,4 +23,9 @@ public:
 };
 
 
+struct StackEmptyException : public std::exception {
+    const char * what () const throw () {
+        return "Empty stack";
+    }
+};
 #endif //PROGS_STACK_H

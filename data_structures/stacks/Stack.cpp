@@ -25,9 +25,7 @@ int Stack::pop() {
         return data;
     }
     else {
-        // TODO: exception
-        cout << "Empty stack !" << endl;
-        return 0;
+        throw StackEmptyException();
     }
 }
 
@@ -47,4 +45,5 @@ int main(){
     cout << "Stack pop: " << stack->pop() << endl;
     cout << "Stack pop: " << stack->pop() << endl;
 
+    stack->pop();
 }
