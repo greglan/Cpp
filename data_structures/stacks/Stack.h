@@ -1,7 +1,6 @@
 #ifndef PROGS_STACK_H
 #define PROGS_STACK_H
 
-
 #include <exception>
 
 
