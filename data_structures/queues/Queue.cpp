@@ -56,5 +56,6 @@ int main() {
     cout << endl;
 
     cout << "Queue empty: " << queue->empty() << endl;
+
     queue->pop();
 }

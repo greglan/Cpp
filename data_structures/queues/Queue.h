@@ -3,7 +3,9 @@
 
 #include <exception>
 
+
 class Queue {
+private:
     class QueueNode{
     public:
         int data;
