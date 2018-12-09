@@ -39,6 +39,10 @@ void LinkedList::remove(int data)
         LinkedList* next_node = current_node->next;  // This can't be nullptr because of the previous if statement
 
         // Search the node to delete
+        if (current_node->data == data)
+        {
+
+        }
         while (next_node->data != data)
         {
             current_node = next_node;
@@ -49,7 +53,15 @@ void LinkedList::remove(int data)
         }
 
         // From here, the node to delete is next_node, and its parent is current_node
-        current_node->next = next_node->next;
+        while (next_node->next != nullptr)
+        {
+            next_node->data = next_node->next->data;
+            current_node = next_node;
+            next_node = next_node->next;
+        }
+
+        // From here, next_node is the last node, and its parent is current_node
+        current_node->next = nullptr;
         delete next_node;
 
     }
@@ -88,9 +100,11 @@ int main()
     list->add(4);
     list->print();
     list->remove(1);
+    list->print();
     list->remove(3);
     list->print();
     list->remove(4);
+    list->print();
     list->remove(2);
     delete list;
 
