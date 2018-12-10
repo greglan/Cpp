@@ -14,7 +14,7 @@ public:
     Node<T>(T const& data);
     void insert(T const& value);
     Node<T>* search(T const& value);
-    Node<T>* get_min_parent();
+    Node<T>* get_min_child();
 };
 
 

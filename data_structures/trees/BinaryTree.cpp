@@ -33,13 +33,13 @@ Node<T>* Node<T>::search(T const& value) {
     if (value < this->data)
     {
         if (this->left != nullptr)
-            this->left.search(value);
+            return this->left->search(value);
         else
             return nullptr;
     }
     else if (this->data < value){
         if (this->right != nullptr)
-            this->right.search(value);
+            return this->right->search(value);
         else
             return nullptr;
     }
@@ -47,6 +47,20 @@ Node<T>* Node<T>::search(T const& value) {
         return this;
     else
         return nullptr;
+}
+
+
+template <class T>
+Node<T>* Node<T>::get_min_child() {
+    Node<T>* parent = this;
+    Node<T>* current = parent->left;
+
+    while (current->left != nullptr){
+        parent = current;
+        current = current->left;
+    }
+
+    return parent;
 }
 
 
@@ -134,9 +148,28 @@ void BinaryTree<T>::remove(const T &value) {
     }
     // Node to delete has two children
     else{
-        Node<T>* successor_parent = to_delete->get_min_parent();
-        Node<T>* successor = successor_parent.left;
+        // FIXME: add member to switch delete method (predecessor)
+        Node<T>* predecessor_parent = to_delete->get_min_child();
+        Node<T>* predecessor = predecessor_parent->left;
+
+        if (to_delete->left != predecessor) // Prevent predecessor from pointing to itself
+            predecessor->left = to_delete->left;
+        predecessor->right = to_delete->right;
+        predecessor_parent->left = nullptr;
+
+        // Update parent of the node to delete
+        if (parent != nullptr) // Node to delete is not the root
+        {
+            if (parent->left == to_delete)
+                parent->left = predecessor;
+            else
+                parent->right = predecessor;
+        }
+        else
+            this->root = predecessor;
     }
+
+    delete to_delete;
 }
 
 
