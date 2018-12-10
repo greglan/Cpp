@@ -2,6 +2,7 @@
 #define PROGS_MINHEAP_H
 
 #include <vector>
+#include <exception>
 using namespace std;
 
 
@@ -10,12 +11,21 @@ class MinHeap {
 private:
     vector<T> nodes;
 
-    void percolate(int index);
+    void percolate_up(unsigned long index);
+    void percolate_down(unsigned long index);
+    unsigned long get_min_child_index(unsigned long index);
+    void swap(unsigned long i, unsigned long j);
 
 public:
-    void insert(T const& value);
-    T get_min() const;
+    MinHeap();
+    void add(T const &value);
+    T get();
 };
 
 
+struct EmptyHeapException : public std::exception {
+    const char * what () const throw () {
+        return "Empty heap";
+    }
+};
 #endif //PROGS_MINHEAP_H
