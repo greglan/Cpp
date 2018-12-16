@@ -2,7 +2,10 @@
 #define PROGS_BINARYTREE_H
 
 #include <exception>
+#include <list>
+#include <vector>
 
+using namespace std;
 
 template <class T>
 class Node{
@@ -15,18 +18,30 @@ public:
     void insert(T const& value);
     Node<T>* search(T const& value);
     Node<T>* get_min_child();
+    void traversal_in_order();
+    void traversal_post_order();
+    void traversal_pre_order();
+    long int is_balanced();
+    bool is_leaf();
 };
 
 
 template <class T>
-class BinaryTree {
+class BinarySearchTree {
 public:
     Node<T>* root;
 
-    BinaryTree();
+    BinarySearchTree();
+    BinarySearchTree(Node<T>* root);
+    bool empty();
     void insert(T const& value);
     Node<T>* search(T const& value);
     void remove(T const& value);
+    void traversal_in_order();
+    void traversal_post_order();
+    void traversal_pre_order();
+    vector<list<T>> list_of_depths();  // TODO
+    bool is_balanced();
 };
 
 
@@ -42,4 +57,7 @@ struct NotFoundException : public std::exception {
         return "Value not found";
     }
 };
+
+
+BinarySearchTree<int>* array_to_binary_tree(int* array, unsigned long size);
 #endif //PROGS_BINARYTREE_H

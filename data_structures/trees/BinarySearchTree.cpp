@@ -1,5 +1,9 @@
 #include <cstdlib>
-#include "BinaryTree.h"
+#include <iostream>
+#include <algorithm>
+#include "BinarySearchTree.h"
+
+using namespace std;
 
 
 /* Single Node methods */
@@ -64,18 +68,90 @@ Node<T>* Node<T>::get_min_child() {
 }
 
 
+template <class T>
+void Node<T>::traversal_in_order() {
+    if (this->left != nullptr)
+        this->left->traversal_in_order();
+    cout << this->data << " ";
+    if (this->right != nullptr)
+        this->right->traversal_in_order();
+}
+
+
+template <class T>
+void Node<T>::traversal_post_order() {
+    if (this->left != nullptr)
+        this->left->traversal_post_order();
+    if (this->right != nullptr)
+        this->right->traversal_post_order();
+    cout << this->data << " ";
+}
+
+
+template <class T>
+void Node<T>::traversal_pre_order() {
+    cout << this->data << " ";
+    if (this->left != nullptr)
+        this->left->traversal_pre_order();
+    if (this->right != nullptr)
+        this->right->traversal_pre_order();
+}
+
+
+template <class T>
+long int Node<T>::is_balanced() {
+    if (this->left == nullptr and this->right == nullptr)
+        return 1;
+    else if (this->left == nullptr) {
+        if (this->right->is_leaf())
+            return 2;
+        else
+            return -1; // Not balanced
+    } else if (this->right == nullptr) {
+        if (this->left->is_leaf())
+            return 2;
+        else
+            return -1; // Not balanced
+    } else {
+        long int left_balance = this->left->is_balanced();
+        long int right_balance = this->right->is_balanced();
+
+        if (left_balance == -1 || right_balance == -1)
+            return -1;
+        else if (abs(left_balance-right_balance) <= 1)
+            return 1 + max(left_balance, right_balance);
+        else
+            return -1;
+    }
+}
+
+
+template <class T>
+bool Node<T>::is_leaf() {
+    return (this->left == nullptr && this->right == nullptr);
+}
 
 
 
 /* Binary tree wrapper methods */
 template <class T>
-BinaryTree<T>::BinaryTree() {
+BinarySearchTree<T>::BinarySearchTree() {
     this->root = nullptr;
 }
 
 
 template <class T>
-void BinaryTree<T>::insert(T const& value) {
+BinarySearchTree<T>::BinarySearchTree(Node<T>* root) {
+    this->root = root;
+}
+
+template <class T>
+bool BinarySearchTree<T>::empty() {
+    return (root == nullptr);
+}
+
+template <class T>
+void BinarySearchTree<T>::insert(T const& value) {
     if (this->root != nullptr)
         this->root->insert(value);
     else
@@ -84,7 +160,7 @@ void BinaryTree<T>::insert(T const& value) {
 
 
 template <class T>
-Node<T>* BinaryTree<T>::search(T const& value) {
+Node<T>* BinarySearchTree<T>::search(T const& value) {
     if (this->root != nullptr)
         return this->root->search(value);
     else
@@ -93,7 +169,7 @@ Node<T>* BinaryTree<T>::search(T const& value) {
 
 
 template <class T>
-void BinaryTree<T>::remove(const T &value) {
+void BinarySearchTree<T>::remove(const T &value) {
     // First step is to find the node to delete
     Node<T>* parent = nullptr;
     Node<T>* to_delete = this->root;
@@ -173,14 +249,52 @@ void BinaryTree<T>::remove(const T &value) {
 }
 
 
+template <class T>
+void BinarySearchTree<T>::traversal_in_order() {
+    this->root->traversal_in_order();
+    cout << endl;
+}
+
+
+template <class T>
+void BinarySearchTree<T>::traversal_post_order() {
+    this->root->traversal_post_order();
+    cout << endl;
+}
+
+
+template <class T>
+void BinarySearchTree<T>::traversal_pre_order() {
+    this->root->traversal_pre_order();
+    cout << endl;
+}
+
+
+BinarySearchTree<int>* array_to_binary_tree(int* array, unsigned long size)
+{
+    // Sort the given array
+    sort(array, array+size);
+
+    BinarySearchTree<int>* tree = new BinarySearchTree<int>;
+    // TODO
+    return tree;
+}
+
+
+template <class T>
+bool BinarySearchTree<T>::is_balanced() {
+    return (this->root->is_balanced() != -1);
+}
+
 
 int main() {
-    BinaryTree<int>* tree = new BinaryTree<int>;
+    BinarySearchTree<int>* tree = new BinarySearchTree<int>;
     tree->insert(1);
     tree->insert(0);
     tree->insert(2);
     tree->insert(3);
     tree->insert(1);
+    cout << "Tree balanced: " << tree->is_balanced() << endl;
 
     tree->search(0);
     tree->search(1);
@@ -195,6 +309,14 @@ int main() {
 
     tree->remove(2);
     tree->remove(1);
+
+    cout << "Traversals" << endl;
+    tree->traversal_in_order();
+    tree->traversal_post_order();
+    tree->traversal_pre_order();
+    cout << endl;
+
+    cout << "Tree balanced: " << tree->is_balanced() << endl;
 
     return EXIT_SUCCESS;
 }
