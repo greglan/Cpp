@@ -6,34 +6,34 @@
 using namespace std;
 
 
-/* Single Node methods */
+/* Single BinaryTreeNode methods */
 template <class T>
-Node<T>::Node(T const& data) {
+BinaryTreeNode<T>::BinaryTreeNode(T const& data) {
     this->data = data;
     this->left = nullptr;
     this->right = nullptr;
 }
 
 template <class T>
-void Node<T>::insert(T const& value) {
+void BinaryTreeNode<T>::insert(T const& value) {
     if (value < this->data)
     {
         if (this->left != nullptr)
             this->left->insert(value);
         else
-            this->left = new Node<T>(value);
+            this->left = new BinaryTreeNode<T>(value);
     }
     else {
         if (this->right != nullptr)
             this->right->insert(value);
         else
-            this->right = new Node<T>(value);
+            this->right = new BinaryTreeNode<T>(value);
     }
 }
 
 
 template <class T>
-Node<T>* Node<T>::search(T const& value) {
+BinaryTreeNode<T>* BinaryTreeNode<T>::search(T const& value) {
     if (value < this->data)
     {
         if (this->left != nullptr)
@@ -55,9 +55,9 @@ Node<T>* Node<T>::search(T const& value) {
 
 
 template <class T>
-Node<T>* Node<T>::get_min_child() {
-    Node<T>* parent = this;
-    Node<T>* current = parent->left;
+BinaryTreeNode<T>* BinaryTreeNode<T>::get_min_child() {
+    BinaryTreeNode<T>* parent = this;
+    BinaryTreeNode<T>* current = parent->left;
 
     while (current->left != nullptr){
         parent = current;
@@ -69,7 +69,7 @@ Node<T>* Node<T>::get_min_child() {
 
 
 template <class T>
-void Node<T>::traversal_in_order() {
+void BinaryTreeNode<T>::traversal_in_order() {
     if (this->left != nullptr)
         this->left->traversal_in_order();
     cout << this->data << " ";
@@ -79,7 +79,7 @@ void Node<T>::traversal_in_order() {
 
 
 template <class T>
-void Node<T>::traversal_post_order() {
+void BinaryTreeNode<T>::traversal_post_order() {
     if (this->left != nullptr)
         this->left->traversal_post_order();
     if (this->right != nullptr)
@@ -89,7 +89,7 @@ void Node<T>::traversal_post_order() {
 
 
 template <class T>
-void Node<T>::traversal_pre_order() {
+void BinaryTreeNode<T>::traversal_pre_order() {
     cout << this->data << " ";
     if (this->left != nullptr)
         this->left->traversal_pre_order();
@@ -99,7 +99,7 @@ void Node<T>::traversal_pre_order() {
 
 
 template <class T>
-long int Node<T>::is_balanced() {
+long int BinaryTreeNode<T>::is_balanced() {
     if (this->left == nullptr and this->right == nullptr)
         return 1;
     else if (this->left == nullptr) {
@@ -127,7 +127,7 @@ long int Node<T>::is_balanced() {
 
 
 template <class T>
-bool Node<T>::is_leaf() {
+bool BinaryTreeNode<T>::is_leaf() {
     return (this->left == nullptr && this->right == nullptr);
 }
 
@@ -141,7 +141,7 @@ BinarySearchTree<T>::BinarySearchTree() {
 
 
 template <class T>
-BinarySearchTree<T>::BinarySearchTree(Node<T>* root) {
+BinarySearchTree<T>::BinarySearchTree(BinaryTreeNode<T>* root) {
     this->root = root;
 }
 
@@ -155,12 +155,12 @@ void BinarySearchTree<T>::insert(T const& value) {
     if (this->root != nullptr)
         this->root->insert(value);
     else
-        this->root = new Node<T>(value);
+        this->root = new BinaryTreeNode<T>(value);
 }
 
 
 template <class T>
-Node<T>* BinarySearchTree<T>::search(T const& value) {
+BinaryTreeNode<T>* BinarySearchTree<T>::search(T const& value) {
     if (this->root != nullptr)
         return this->root->search(value);
     else
@@ -171,8 +171,8 @@ Node<T>* BinarySearchTree<T>::search(T const& value) {
 template <class T>
 void BinarySearchTree<T>::remove(const T &value) {
     // First step is to find the node to delete
-    Node<T>* parent = nullptr;
-    Node<T>* to_delete = this->root;
+    BinaryTreeNode<T>* parent = nullptr;
+    BinaryTreeNode<T>* to_delete = this->root;
 
     while (to_delete != nullptr && to_delete->data != value)
     {
@@ -189,7 +189,7 @@ void BinarySearchTree<T>::remove(const T &value) {
         throw NotFoundException();
 
     // Else, to_delete is the node to delete
-    // Node to delete is a leaf
+    // BinaryTreeNode to delete is a leaf
     if (to_delete->left == nullptr && to_delete->right == nullptr){
         if (parent == nullptr)
             this->root = nullptr;
@@ -200,9 +200,9 @@ void BinarySearchTree<T>::remove(const T &value) {
                 parent->right = nullptr;
         }
     }
-    // Node to delete has no left child. Replace it with its right child
+    // BinaryTreeNode to delete has no left child. Replace it with its right child
     else if (to_delete->left == nullptr){
-        if (parent == nullptr) // Node to delete is the root
+        if (parent == nullptr) // BinaryTreeNode to delete is the root
             this->root = to_delete->right;
         else{
             if (parent->left == to_delete)
@@ -211,9 +211,9 @@ void BinarySearchTree<T>::remove(const T &value) {
                 parent->right = to_delete->right;
         }
     }
-        // Node to delete has no right child. Replace it with its left child
+        // BinaryTreeNode to delete has no right child. Replace it with its left child
     else if (to_delete->right == nullptr){
-        if (parent == nullptr) // Node to delete is the root
+        if (parent == nullptr) // BinaryTreeNode to delete is the root
             this->root = to_delete->right;
         else{
             if (parent->left == to_delete)
@@ -222,11 +222,11 @@ void BinarySearchTree<T>::remove(const T &value) {
                 parent->right = to_delete->left;
         }
     }
-    // Node to delete has two children
+    // BinaryTreeNode to delete has two children
     else{
         // FIXME: add member to switch delete method (predecessor)
-        Node<T>* predecessor_parent = to_delete->get_min_child();
-        Node<T>* predecessor = predecessor_parent->left;
+        BinaryTreeNode<T>* predecessor_parent = to_delete->get_min_child();
+        BinaryTreeNode<T>* predecessor = predecessor_parent->left;
 
         if (to_delete->left != predecessor) // Prevent predecessor from pointing to itself
             predecessor->left = to_delete->left;
@@ -234,7 +234,7 @@ void BinarySearchTree<T>::remove(const T &value) {
         predecessor_parent->left = nullptr;
 
         // Update parent of the node to delete
-        if (parent != nullptr) // Node to delete is not the root
+        if (parent != nullptr) // BinaryTreeNode to delete is not the root
         {
             if (parent->left == to_delete)
                 parent->left = predecessor;

@@ -8,16 +8,16 @@
 using namespace std;
 
 template <class T>
-class Node{
+class BinaryTreeNode{
 public:
     T data;
-    Node* left;
-    Node* right;
+    BinaryTreeNode<T>* left;
+    BinaryTreeNode<T>* right;
 
-    Node<T>(T const& data);
+    BinaryTreeNode<T>(T const& data);
     void insert(T const& value);
-    Node<T>* search(T const& value);
-    Node<T>* get_min_child();
+    BinaryTreeNode<T>* search(T const& value);
+    BinaryTreeNode<T>* get_min_child();
     void traversal_in_order();
     void traversal_post_order();
     void traversal_pre_order();
@@ -29,13 +29,13 @@ public:
 template <class T>
 class BinarySearchTree {
 public:
-    Node<T>* root;
+    BinaryTreeNode<T>* root;
 
     BinarySearchTree();
-    BinarySearchTree(Node<T>* root);
+    BinarySearchTree(BinaryTreeNode<T>* root);
     bool empty();
     void insert(T const& value);
-    Node<T>* search(T const& value);
+    BinaryTreeNode<T>* search(T const& value);
     void remove(T const& value);
     void traversal_in_order();
     void traversal_post_order();
