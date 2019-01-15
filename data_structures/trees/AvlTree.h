@@ -19,13 +19,11 @@ private:
 
     void update_height();
     bool is_balanced();
-    bool is_unbalanced();
     AvlTree<T>* left_rotation();
     AvlTree<T>* right_rotation();
     queue<AvlTree<T>*>safe_insert(T const& value);
 
 public:
-    AvlTree();
     AvlTree(T const& value);
 
     void insert(T const& value);

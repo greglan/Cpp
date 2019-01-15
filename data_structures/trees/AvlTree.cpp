@@ -3,14 +3,6 @@
 
 
 template <class T>
-AvlTree<T>::AvlTree() {
-    this->left = nullptr;
-    this->right = nullptr;
-    this->height = 0;
-}
-
-
-template <class T>
 AvlTree<T>::AvlTree(T const& value) {
     this->data = value;
     this->left = nullptr;
@@ -49,12 +41,6 @@ void AvlTree<T>::update_height() {
 
 template <class T>
 bool AvlTree<T>::is_balanced() {
-    return !this->is_unbalanced();
-}
-
-
-template <class T>
-bool AvlTree<T>::is_unbalanced() {
     if (this->left != nullptr && this->right != nullptr)
         return  (abs(this->left->height - this->right->height) <= 1);
     else if (this->left != nullptr)
@@ -187,12 +173,12 @@ queue<AvlTree<T>*> AvlTree<T>::safe_insert(const T &value) {
 
 
 int main() {
-    AvlTree<int>* tree = new AvlTree<int>;
-    tree->insert(1);
+    AvlTree<int>* tree = new AvlTree<int>(1);
     tree->insert(0);
     tree->insert(2);
     tree->insert(3);
     tree->insert(1);
+    tree->insert(4); // FIXME: a rotation is supposed to happen here
 
     cout << "Traversal: " << endl;
     tree->traversal_in_order();
