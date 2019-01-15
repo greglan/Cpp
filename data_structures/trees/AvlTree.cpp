@@ -103,24 +103,23 @@ AvlTree<T>* AvlTree<T>::right_rotation() {
 
 template <class T>
 queue<AvlTree<T>*> AvlTree<T>::safe_insert(const T &value) {
-    queue<AvlTree<T>*> children = nullptr;
+    queue<AvlTree<T>*> children;
 
     // Regular binary search tree insert
     if (value < this->data) {
         if (this->left != nullptr) {
             children = this->left->safe_insert(value);
 
-            if (children == nullptr) // A balancing already occurred and has been dealt with already
-                return nullptr;
+            if (children.size() == 0) // A balancing already occurred and has been dealt with already
+                return children;
             else if (children.size() == 1) { // A balancing already occurred and the queue contains the new root
                 this->left = children.front(); // Update the new root
                 this->update_height();
-                return nullptr;
+                return queue<AvlTree<T>*>();
             }
         }
         else {
-            this->left = AvlTree(value);
-            children = new queue<AvlTree<T>>;
+            this->left = new AvlTree(value);
             children.push(nullptr);  // Grand child first (will never be used anyway)
             children.push(this->left);  // Then child
         }
@@ -129,17 +128,16 @@ queue<AvlTree<T>*> AvlTree<T>::safe_insert(const T &value) {
         if (this->right != nullptr) {
             children = this->right->safe_insert(value);
 
-            if (children == nullptr) // A balancing already occurred and has been dealt with already
-                return nullptr;
+            if (children.size() == 0) // A balancing already occurred and has been dealt with already
+                return children;
             else if (children.size() == 1) { // A balancing already occurred and the queue contains the new root
                 this->right = children.front(); // Update the new root
                 this->update_height();
-                return nullptr;
+                return queue<AvlTree<T>*>();
             }
         }
         else {
-            this->right = AvlTree(value);
-            children = new queue<AvlTree<T>>;
+            this->right = new AvlTree(value);
             children.push(nullptr);  // Grand child first (will never be used anyway)
             children.push(this->right);  // Then child
         }
@@ -181,7 +179,6 @@ queue<AvlTree<T>*> AvlTree<T>::safe_insert(const T &value) {
         }
 
         // Return the new root of this subtree
-        children = new queue<AvlTree<T>>;
         children.push(new_root);
         return children;
     }
