@@ -1,31 +1,36 @@
 #ifndef PROGS_AVLTREE_H
 #define PROGS_AVLTREE_H
 
+#include <cstdlib>
+#include <iostream>
+#include <queue>
 
-template <class T>
-class AvlTreeNode {
-public:
 
-};
+using namespace std;
 
 
 template <class T>
 class AvlTree {
-public:
+private:
     T data;
     AvlTree<T>* left;
     AvlTree<T>* right;
     long height;
 
-    AvlTree();
-    AvlTree(T const& value);
+    void update_height();
+    bool is_balanced();
+    bool is_unbalanced();
     AvlTree<T>* left_rotation();
     AvlTree<T>* right_rotation();
+    queue<AvlTree<T>*>safe_insert(T const& value);
+
+public:
+    AvlTree();
+    AvlTree(T const& value);
+
     void insert(T const& value);
     void remove(T const& value);
-
-private:
-    AvlTree<T>* bst_insert(T const& value);
+    void traversal_in_order();
 };
 
 
