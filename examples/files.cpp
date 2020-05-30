@@ -19,13 +19,13 @@ int main()
      * - ios::out -> Write. Mandatory but default value when using objects "ofstream".
      * - ios::app (append) -> Write with default position at the end of file.
      * - ios::trunc (truncate) -> Write but erases the whole file before
-     * - ios::ate (at end) -> Similar to ios::app, but if repositionning, writing will not necesarrily happen at the end of the file, contrary to "ios::app"
+     * - ios::ate (at end) -> ~ ios::app, but if repositionning, write will not always happen at EOF, contrary to "ios::app"
      * Either "ios::trunc" or "ios::ate", not both. The file must exist !
      */
-    string path1 = "write.txt", path2 = "read.txt", path3 = "read_write.txt";
+    string path1 = "../examples/write.txt", path2 = "../examples/read.txt", path3 = "../examples/read_write.txt";
     ofstream fw(path1);
     ifstream fr(path2.c_str());
-    fstream frw(path3, ios::in | ios::out);
+    fstream frw(path3, ios::in | ios::out | ios :: trunc);
 
 
     /*
@@ -33,23 +33,60 @@ int main()
      */
     int integer = 1;
     char chr = 'A';
-    string str = "A line to a file";
+    string str = "String";
 
     fw << integer << " ";
-    fw << chr << " " << str;
-    frw.put(integer);
-    frw.put(chr);
-    frw << " " << str << endl;
+    fw << chr << " " << str << endl;
+    frw << integer << " " << chr << " " << str << endl;
+//    frw.put(integer);
 
 
     /*
-     * Reading files
+     * Reading ifstream files
      */
-    string line, word;
-    char letter;
-    getline(fr, str, 'w'); // Read a string into "str" until the character 'w' is found. Default character: '\n'
-    fr >> word; // Read until a delimiter (space, or '\n') is found
-    frw.get(letter); // Read a character
+    // Read a character
+    chr = 0;
+    fr >> chr;
+    cout << "Read character from ifstream: " << chr << endl;
+
+    // Read words by words
+    fr >> str; // Read until a delimiter (space, or '\n') is found
+    cout << "Read word from ifstream: " << str << endl;
+    fr >> str;
+    cout << "Read word from ifstream: " << str << endl;
+    fr >> str;
+    cout << "Read word from ifstream: " << str << endl;
+
+    // Read a line
+    getline(fr, str);
+    cout << "Read remaining line from ifstream: " << str << endl;
+    getline(fr, str);
+    cout << "Read line from ifstream: " << str << endl;
+
+    // Read line until character
+    getline(fr, str, 'Z'); // Notice that this character will never be read: excluded. See remaining line
+    cout << "Read line from ifstream until character: " << str << endl;
+
+    // Read remaining line
+    getline(fr, str);
+    cout << "Read remaining line from ifstream: " << str << endl;
+
+    // Read when EOF
+    str = "";
+    getline(fr, str);
+    cout << "Read line from ifstream when EOF: " << str << endl; // Value of str is unchanged
+
+
+    /*
+     * Reading from fstream files
+     */
+//    chr = 0;
+//    frw >> chr;
+//    frw.get(chr); // Read a character
+//    cout << "Read character from fstream: " << chr << endl;
+
+    // Read a line
+//    getline(fr, str, 'w'); // Read a string into "str" until the character 'w' is found. Default character: '\n'
 
 
     /*
@@ -60,10 +97,19 @@ int main()
      * - ios::cur -> Current position
      * - ios::end -> Enf of file
      */
-    fw.tellp(); // For ofstream
-    fr.tellg(); // For ifstream
-//    fw.seekp(nb_cara_deplacement, reference_facultative = ios::beg); // For ofstream
-//    fr.seekg(nb_cara_deplacement, reference_facultative = ios::beg); // For ifstream
+    int position;
+    position = fw.tellp(); // For ofstream
+    position = fr.tellg(); // For ifstream
+
+    // Go back the beginning
+    fw.seekp(0, ios::beg);
+    fr.clear(); // Clear the 'EOF' flag, necessary before C++11
+    fr.seekg(0, ios::beg);
+    cout << "Went back to beginning of ofstream and ifstream files" << endl;
+
+    // Go back to a certain position
+    fw.seekp(position, ios::beg);
+    fr.seekg(position, ios::beg);
 
 
     /*
