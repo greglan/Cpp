@@ -18,3 +18,6 @@ target_link_libraries(unweighted_graphs_test ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY
 
 
 add_executable(strings utils/strings.cpp)
+
+add_executable(example_basics examples/basics.cpp)
+add_executable(example_files examples/files.cpp)
