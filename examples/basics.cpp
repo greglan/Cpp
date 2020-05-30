@@ -154,4 +154,5 @@ int main()
 //    string_examples();
 //    array_examples();
 //    references_examples();
+    return EXIT_SUCCESS;
 }
